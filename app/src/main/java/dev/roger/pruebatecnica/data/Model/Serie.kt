@@ -1,4 +1,4 @@
-package dev.roger.pruebatecnica.Model
+package dev.roger.pruebatecnica.data.Model
 
 import java.util.*
 

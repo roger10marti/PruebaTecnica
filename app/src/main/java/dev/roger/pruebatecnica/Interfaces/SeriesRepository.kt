@@ -1,6 +1,6 @@
 package dev.roger.pruebatecnica.Interfaces
 
-import dev.roger.pruebatecnica.Model.Generic
+import dev.roger.pruebatecnica.data.Model.Generic
 import retrofit2.http.GET
 
 interface SeriesRepository {
