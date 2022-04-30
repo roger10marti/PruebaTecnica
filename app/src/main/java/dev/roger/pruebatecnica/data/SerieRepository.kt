@@ -15,10 +15,15 @@ class SerieRepository @Inject constructor(
     private val serieProvider: SerieProvider
 ) {
 
-    suspend fun getSeriesPackage(): List<Serie> {
-        val response = api.getSeries()
+    suspend fun getSeriesPackage(language: String, i: Int): List<Serie> {
+        val response = api.getSeries(language, i)
         Log.d("ROGER getSeriesPackage", response.size.toString())
         serieProvider.series = response
+        return response
+    }
+
+    suspend fun getTotalPages(): Int {
+        val response = api.getTotalPages()
         return response
     }
 }

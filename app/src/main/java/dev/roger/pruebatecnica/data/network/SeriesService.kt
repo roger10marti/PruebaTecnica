@@ -11,13 +11,20 @@ import javax.inject.Singleton
 class SeriesService @Inject constructor(private val api: SeriesApiClient) {
     val api_key = "c6aeee577586ba38e487b74dfede5deb"
 
-    suspend fun getSeries(): List<Serie> {
+    suspend fun getSeries(language: String, i: Int): List<Serie> {
         return withContext(Dispatchers.IO) {
             //val response = api.getAllSeries(api_key,"en-US","1")
-            val response = api.getAllSeries()
+            val response = api.getAllSeries(language,i)
             Log.d("ROGER", response.body()?.totalPages.toString())
             Log.d("ROGER", response.body()?.series!!.size.toString())
             response.body()!!.series ?: emptyList()
+        }
+    }
+
+    suspend fun getTotalPages(): Int {
+        return withContext(Dispatchers.IO) {
+            val response = api.getTotalPages()
+            response.body()!!.totalPages
         }
     }
 }

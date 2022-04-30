@@ -7,7 +7,7 @@ class Serie(
     @SerializedName("backdrop_path")
     val backdrop_path: String,
     @SerializedName("first_air_date")
-    val first_air_date: Date,
+    val first_air_date: String,
     @SerializedName("genre_ids")
     val genre_ids: Array<Int>,
     @SerializedName("id")

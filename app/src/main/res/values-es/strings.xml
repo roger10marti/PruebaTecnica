@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Prueba Tecnica</string>
+    <string name="original_language">Idioma Original:</string>
+    <string name="first_air_date">Fecha de estreno:</string>
+    <string name="vote_average">Media de valoración:</string>
+    <string name="number_of_votes">Numero de votos:</string>
+    <string name="overview">Resumen</string>
+    <string name="next">Siguiente</string>
+    <string name="previous">Anterior</string>
+</resources>

@@ -5,5 +5,5 @@ import javax.inject.Inject
 
 class GetSeriesUseCase @Inject constructor(private val seriesRepository : SerieRepository) {
 
-    suspend operator fun invoke() = seriesRepository.getSeriesPackage();
+    suspend operator fun invoke(language: String, i: Int) = seriesRepository.getSeriesPackage(language,i);
 }

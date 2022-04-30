@@ -1,5 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Prueba Tecnica</string>
     <string name="original_language">Original language:</string>
     <string name="first_air_date">First air date:</string>
     <string name="vote_average">Vote average:</string>
