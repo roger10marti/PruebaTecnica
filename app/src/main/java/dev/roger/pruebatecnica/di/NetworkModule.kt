@@ -13,7 +13,8 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object NetworkModule {
     val api_key = "c6aeee577586ba38e487b74dfede5deb"
-    val BASE_URL = "https://api.themoviedb.org/3/tv/popular?api_key="+ api_key +"&language=en-US&page="
+    val BASE_URL2 = "https://api.themoviedb.org/3/tv/popular?api_key="+ api_key +"&language=en-US&page=1"
+    val BASE_URL = "https://api.themoviedb.org/3/"
 
     @Singleton
     @Provides

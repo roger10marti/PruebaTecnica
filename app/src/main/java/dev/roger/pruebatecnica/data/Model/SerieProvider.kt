@@ -5,5 +5,5 @@ import javax.inject.Singleton
 
 @Singleton
 class SerieProvider @Inject constructor() {
-    var series: List<Generic> = emptyList();
+    var series: List<Serie> = emptyList();
 }
