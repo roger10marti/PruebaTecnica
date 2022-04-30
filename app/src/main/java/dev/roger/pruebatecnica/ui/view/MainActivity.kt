@@ -37,8 +37,12 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(applicationContext,it.original_name,Toast.LENGTH_LONG);
         })
 
-        binding.button.setOnClickListener {
-            seriesViewModel.seriesList()
+        binding.buttonNext.setOnClickListener {
+
+        }
+
+        binding.buttonPrevious.setOnClickListener {
+
         }
 
     }
