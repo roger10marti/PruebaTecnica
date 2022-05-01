@@ -32,4 +32,9 @@ class SerieRepository @Inject constructor(
         serieProvider.series = response
         return response
     }
+
+    suspend fun getSeriesWithoutConnectionQty(): Int {
+        val response = api.getSeriesNoWifiQty()
+        return response
+    }
 }

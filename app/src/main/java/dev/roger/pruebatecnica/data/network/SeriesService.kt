@@ -91,4 +91,10 @@ class SeriesService @Inject constructor(
             series
         }
     }
+
+    suspend fun getSeriesNoWifiQty(): Int {
+        return withContext(Dispatchers.IO) {
+            serieDao.getCountSeries()
+        }
+    }
 }

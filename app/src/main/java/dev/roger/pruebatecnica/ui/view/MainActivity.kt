@@ -1,12 +1,8 @@
 package dev.roger.pruebatecnica.ui.view
 
-import android.app.ActionBar
 import android.content.Context
-import android.graphics.drawable.Drawable
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -16,10 +12,8 @@ import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_NO
 import androidx.appcompat.app.AppCompatDelegate.MODE_NIGHT_YES
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import dev.roger.pruebatecnica.R
 import dev.roger.pruebatecnica.databinding.ActivityMainBinding
 import dev.roger.pruebatecnica.ui.ViewModel.SeriesViewModel
-import java.util.*
 
 
 @AndroidEntryPoint
@@ -53,6 +47,7 @@ class MainActivity : AppCompatActivity() {
                 seriesViewModel.buttonFunctionality(1,true)
             }else{
                 seriesViewModel.buttonFunctionality(1,false)
+                seriesViewModel.checkNextButtonWithoutConnection(binding.buttonNext as Button)
             }
             seriesViewModel.buttonControl(binding.buttonNext as Button,
                 binding.buttonPrevious as Button)
@@ -63,6 +58,7 @@ class MainActivity : AppCompatActivity() {
                 seriesViewModel.buttonFunctionality(-1,true)
             }else{
                 seriesViewModel.buttonFunctionality(-1,false)
+                seriesViewModel.checkNextButtonWithoutConnection(binding.buttonNext as Button)
             }
             seriesViewModel.buttonControl(binding.buttonNext as Button,
                 binding.buttonPrevious as Button)

@@ -14,10 +14,7 @@ import dev.roger.pruebatecnica.data.Model.Serie
 import dev.roger.pruebatecnica.data.Model.SerieProvider
 import dev.roger.pruebatecnica.data.SerieRepository
 import dev.roger.pruebatecnica.data.daos.GenericDao
-import dev.roger.pruebatecnica.domain.GetAllSeriesUseCase
-import dev.roger.pruebatecnica.domain.GetSeriesUseCase
-import dev.roger.pruebatecnica.domain.GetSeriesWithoutConnection
-import dev.roger.pruebatecnica.domain.GetTotalPagesUseCase
+import dev.roger.pruebatecnica.domain.*
 import dev.roger.pruebatecnica.ui.view.MainActivity
 import dev.roger.pruebatecnica.ui.view.SeriesAdapter
 import kotlinx.coroutines.launch
@@ -29,7 +26,8 @@ class SeriesViewModel @Inject constructor(
     private val getSeriesUseCase: GetSeriesUseCase,
     private val getAllSeriesUseCase: GetAllSeriesUseCase,
     private val getTotalPagesUseCase: GetTotalPagesUseCase,
-    private val getSeriesWithoutConnection: GetSeriesWithoutConnection
+    private val getSeriesWithoutConnection: GetSeriesWithoutConnection,
+    private val getSeriesQtyUseCase: GetSeriesQtyUseCase
 ): ViewModel(){
 
     val seriesModel = MutableLiveData<Serie>()
@@ -156,6 +154,17 @@ class SeriesViewModel @Inject constructor(
             buttonNext.isEnabled = true
         } else {
             buttonPrevious.isEnabled = true
+        }
+    }
+
+    fun checkNextButtonWithoutConnection(button: Button) {
+        viewModelScope.launch {
+            var numberOfSeries = getSeriesQtyUseCase.invoke()
+            if ((actualPageValue*20) >= numberOfSeries) {
+                button.isEnabled = false
+            } else{
+                button.isEnabled = true
+            }
         }
     }
 }
