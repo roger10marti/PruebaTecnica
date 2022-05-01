@@ -26,4 +26,10 @@ class SerieRepository @Inject constructor(
         val response = api.getTotalPages()
         return response
     }
+
+    suspend fun getSeriesWithoutConnection(language: String, i: Int): List<Serie> {
+        val response = api.getSeriesNoWifi(language, i)
+        serieProvider.series = response
+        return response
+    }
 }

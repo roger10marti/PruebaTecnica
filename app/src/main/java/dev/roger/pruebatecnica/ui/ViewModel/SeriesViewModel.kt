@@ -1,5 +1,7 @@
 package dev.roger.pruebatecnica.ui.ViewModel
 
+import android.content.Context
+import android.net.ConnectivityManager
 import android.util.Log
 import android.widget.Button
 import androidx.lifecycle.MutableLiveData
@@ -11,8 +13,10 @@ import dev.roger.pruebatecnica.data.Model.Generic
 import dev.roger.pruebatecnica.data.Model.Serie
 import dev.roger.pruebatecnica.data.Model.SerieProvider
 import dev.roger.pruebatecnica.data.SerieRepository
+import dev.roger.pruebatecnica.data.daos.GenericDao
 import dev.roger.pruebatecnica.domain.GetAllSeriesUseCase
 import dev.roger.pruebatecnica.domain.GetSeriesUseCase
+import dev.roger.pruebatecnica.domain.GetSeriesWithoutConnection
 import dev.roger.pruebatecnica.domain.GetTotalPagesUseCase
 import dev.roger.pruebatecnica.ui.view.MainActivity
 import dev.roger.pruebatecnica.ui.view.SeriesAdapter
@@ -24,7 +28,8 @@ import javax.inject.Inject
 class SeriesViewModel @Inject constructor(
     private val getSeriesUseCase: GetSeriesUseCase,
     private val getAllSeriesUseCase: GetAllSeriesUseCase,
-    private val getTotalPagesUseCase: GetTotalPagesUseCase
+    private val getTotalPagesUseCase: GetTotalPagesUseCase,
+    private val getSeriesWithoutConnection: GetSeriesWithoutConnection
 ): ViewModel(){
 
     val seriesModel = MutableLiveData<Serie>()
@@ -36,7 +41,6 @@ class SeriesViewModel @Inject constructor(
     var actualPageValue: Int = 1
     lateinit var recyclerViewAdapter: SeriesAdapter
 
-    //var listSeries: List<Serie> = emptyList()
     fun getLiveDataObserver(): List<Serie> {
         seriesList()
         return seriesList
@@ -55,14 +59,34 @@ class SeriesViewModel @Inject constructor(
             totalPages = getTotalPagesUseCase()
 
             if (!result.isNullOrEmpty()) {
-                //listSeries = getSeriesRepo.getSeriesPackage();
-                //listSeries = seriesProvider.series
                 seriesModel.postValue(result[0])
                 isLoading.postValue(false)
                 seriesList = result
 
                 recyclerViewAdapter.setListData(getLiveDataObserver())
-                Log.d("ROGER", getLiveDataObserver().size.toString())
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun onCreateWithoutConnection() {
+
+        viewModelScope.launch {
+            isLoading.postValue(true)
+
+            Log.d("ROGER", Locale.getDefault().language)
+            if (Locale.getDefault().language == "es") languageCode = "es-ES"
+            else languageCode = "en-US"
+
+            val result = getSeriesWithoutConnection.invoke(languageCode,actualPageValue)
+            totalPages = 5800
+
+            if (!result.isNullOrEmpty()) {
+                seriesModel.postValue(result[0])
+                isLoading.postValue(false)
+                seriesList = result
+
+                recyclerViewAdapter.setListData(getLiveDataObserver())
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }
@@ -78,43 +102,43 @@ class SeriesViewModel @Inject constructor(
         isLoading.postValue(false)
     }
 
-    fun buttonNext() : Int{
-        viewModelScope.launch {
-            isLoading.postValue(true)
-            actualPageValue++
-            val result = getSeriesUseCase(languageCode,actualPageValue)
-
-            if (!result.isNullOrEmpty()) {
-                //listSeries = getSeriesRepo.getSeriesPackage();
-                //listSeries = seriesProvider.series
-                seriesModel.postValue(result[0])
-                isLoading.postValue(false)
-                seriesList = result
-
-                recyclerViewAdapter.setListData(getLiveDataObserver())
-                Log.d("ROGER", getLiveDataObserver().size.toString())
-                recyclerViewAdapter.notifyDataSetChanged()
-
-            }
+    fun buttonFunctionality(i:Int,connection: Boolean) {
+        if (connection) {
+            apiCall(i)
+        } else{
+            getDataWithoutConnection(i)
         }
-        return actualPageValue
     }
 
-    fun buttonPrevious() {
+    fun getDataWithoutConnection(i: Int) {
         viewModelScope.launch {
-            isLoading.postValue(true)
-            actualPageValue--
-            val result = getSeriesUseCase(languageCode,actualPageValue)
+            actualPageValue = actualPageValue + i
+            val result = getSeriesWithoutConnection.invoke(languageCode,actualPageValue)
+            totalPages = 5800
 
             if (!result.isNullOrEmpty()) {
-                //listSeries = getSeriesRepo.getSeriesPackage();
-                //listSeries = seriesProvider.series
                 seriesModel.postValue(result[0])
                 isLoading.postValue(false)
                 seriesList = result
 
                 recyclerViewAdapter.setListData(getLiveDataObserver())
-                Log.d("ROGER", getLiveDataObserver().size.toString())
+                recyclerViewAdapter.notifyDataSetChanged()
+            }
+        }
+    }
+
+    fun apiCall(i: Int) {
+        viewModelScope.launch {
+            isLoading.postValue(true)
+            actualPageValue = actualPageValue + i
+            val result = getSeriesUseCase(languageCode,actualPageValue)
+
+            if (!result.isNullOrEmpty()) {
+                seriesModel.postValue(result[0])
+                isLoading.postValue(false)
+                seriesList = result
+
+                recyclerViewAdapter.setListData(getLiveDataObserver())
                 recyclerViewAdapter.notifyDataSetChanged()
             }
         }

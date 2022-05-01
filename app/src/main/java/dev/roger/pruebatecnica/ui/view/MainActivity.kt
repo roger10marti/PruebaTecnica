@@ -1,10 +1,13 @@
 package dev.roger.pruebatecnica.ui.view
 
 import android.app.ActionBar
+import android.content.Context
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
@@ -33,7 +36,11 @@ class MainActivity : AppCompatActivity() {
         initRecyclerView()
         //initViewModel()
 
-        seriesViewModel.onCreate()
+        if (checkConnection(applicationContext)) {
+            seriesViewModel.onCreate()
+        }else{
+            seriesViewModel.onCreateWithoutConnection()
+        }
 
         seriesViewModel.seriesList()
 
@@ -42,13 +49,23 @@ class MainActivity : AppCompatActivity() {
         })
 
         binding.buttonNext.setOnClickListener {
-            seriesViewModel.buttonNext()
-            seriesViewModel.buttonControl(binding.buttonNext,binding.buttonPrevious)
+            if (checkConnection(applicationContext)) {
+                seriesViewModel.buttonFunctionality(1,true)
+            }else{
+                seriesViewModel.buttonFunctionality(1,false)
+            }
+            seriesViewModel.buttonControl(binding.buttonNext as Button,
+                binding.buttonPrevious as Button)
         }
 
         binding.buttonPrevious.setOnClickListener {
-            seriesViewModel.buttonPrevious()
-            seriesViewModel.buttonControl(binding.buttonNext,binding.buttonPrevious)
+            if (checkConnection(applicationContext)) {
+                seriesViewModel.buttonFunctionality(-1,true)
+            }else{
+                seriesViewModel.buttonFunctionality(-1,false)
+            }
+            seriesViewModel.buttonControl(binding.buttonNext as Button,
+                binding.buttonPrevious as Button)
         }
 
         binding.imageView?.setOnClickListener {
@@ -59,7 +76,8 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-        seriesViewModel.buttonControl(binding.buttonNext,binding.buttonPrevious)
+        seriesViewModel.buttonControl(binding.buttonNext as Button,
+            binding.buttonPrevious as Button)
 
         //AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_YES);
         //AppCompatDelegate.setDefaultNightMode(MODE_NIGHT_NO);
@@ -70,5 +88,17 @@ class MainActivity : AppCompatActivity() {
         binding.recyclerView.layoutManager = LinearLayoutManager(this)
         seriesViewModel.recyclerViewAdapter = SeriesAdapter()
         binding.recyclerView.adapter = seriesViewModel.recyclerViewAdapter
+    }
+
+    fun checkConnection(context: Context): Boolean {
+        val connMgr = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (connMgr != null) {
+            val activeNetworkInfo = connMgr.activeNetwork
+            if (activeNetworkInfo != null) { // connected to the internet
+                // connected to the mobile provider's data plan
+                return true
+            }
+        }
+        return false
     }
 }
