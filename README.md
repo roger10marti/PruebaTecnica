@@ -1,4 +1,4 @@
-# Prueba Tecnica
+# Prueba Técnica
 
 Para realizar la prueba técnica he desarrollado la aplicación utilizando el lenguaje de programación kotlin.
 
