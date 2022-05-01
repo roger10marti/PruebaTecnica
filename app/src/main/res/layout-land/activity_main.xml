@@ -6,7 +6,8 @@
     android:layout_height="match_parent"
     tools:context=".ui.view.MainActivity">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
+        app:cornerRadius="15dp"
         android:id="@+id/buttonPrevious"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -14,6 +15,7 @@
         android:layout_marginTop="15dp"
         android:layout_marginBottom="15dp"
         android:text="@string/previous"
+        android:backgroundTint="#3F51B5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView"
@@ -32,9 +34,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonNext"
         android:layout_width="wrap_content"
+        app:cornerRadius="15dp"
+        android:backgroundTint="#3F51B5"
         android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:layout_marginEnd="16dp"
